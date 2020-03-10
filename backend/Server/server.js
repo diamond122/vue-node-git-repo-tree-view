@@ -31,21 +31,20 @@ const callGitRegistry = (repoName, cb) => {
 const getRepoInfo = (repoName, res) => {
   const key = 'repo_' + repoName;
 
-  // memoryCache.wrap(key, cb => {
-  //   callGitRegistry(repoName, cb);
-  // }, {ttl: ttl}, (err, repo) => {
-  //   memoryCache.wrap(key, cb => {
-  //     callGitRegistry(repoName, cb);
-  //   }, (err, repo) => {
-  //     if(repo.err) {
-  //       res.send('not found');
-  //     } else {
-  //       console.log('cached', repo.name);
-  //       res.send(repo.dependencies);
-  //     }
-  //   });
-  // });
-  res.send('works');
+  memoryCache.wrap(key, cb => {
+    callGitRegistry(repoName, cb);
+  }, {ttl: ttl}, (err, repo) => {
+    memoryCache.wrap(key, cb => {
+      callGitRegistry(repoName, cb);
+    }, (err, repo) => {
+      if(repo.err) {
+        res.send('not found');
+      } else {
+        console.log('cached', repo.name);
+        res.send(repo.dependencies);
+      }
+    });
+  });
 };
 
 app.get(
@@ -63,17 +62,16 @@ app.get(
     var repoName = 'express';
     var key = 'repo_' + repoName;
  
-    // memoryCache.wrap(key, cb => {
-    //   getRepoInfo(repoName, cb);
-    // }, {ttl: ttl}, (err, repo) => {
-    //   memoryCache.wrap(key, cb => {
-    //     getRepoInfo(repoName, cb);
-    //   }, (err, repo) => {
-    //       console.log('cached', repo.name);
-    //       res.send(repo.dependencies);
-    //   });
-    // });
-    res.send('works');
+    memoryCache.wrap(key, cb => {
+      getRepoInfo(repoName, cb);
+    }, {ttl: ttl}, (err, repo) => {
+      memoryCache.wrap(key, cb => {
+        getRepoInfo(repoName, cb);
+      }, (err, repo) => {
+          console.log('cached', repo.name);
+          res.send(repo.dependencies);
+      });
+    });
   }
 );
 
@@ -82,4 +80,6 @@ app.get(
 // console.log("Listening on port " + port);
 
 
-app.listen(process.env.PORT || 3000);
+app.listen(3000, function () {
+  console.log('App listening on port 3000!')
+})

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-text-field label="Search" v-model="key"></v-text-field>
+    <v-text-field label="Package Name" v-model="key"></v-text-field>
     <v-btn
       class="tree_bt"
       small
@@ -8,7 +8,7 @@
       color="primary"
       @click="onClick"
     >
-      Click
+      Search
     </v-btn>
     <v-spacer />
     <v-treeview :items="items" :load-children="loadChildren"></v-treeview>
