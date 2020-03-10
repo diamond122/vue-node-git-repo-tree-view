@@ -1,4 +1,4 @@
-# Vue + Node to search Git repositories.
+# Vue + Node to fetch NPM registry.
 
 App for fetching NPM registry to avoid CORS on client side, backend with NODE+EXPRESS, frontend with VUEJS
 
