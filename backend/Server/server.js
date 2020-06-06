@@ -22,7 +22,7 @@ const callGitRegistry = (repoName, cb) => {
   console.log('repoName:', repoName);
   axios.get(getRepoURL(repoName))
   .then(result => {
-    const dependencies = result.data.dependencies || {};
+    const dependencies = {...(result.data.dependencies || {}), ...(result.data.devDependencies || {})};
     cb(null, {name: repoName, dependencies});
   })
   .catch(err => cb(null, {err}));
@@ -41,7 +41,7 @@ const getRepoInfo = (repoName, res) => {
         res.send('not found');
       } else {
         console.log('cached', repo.name);
-        res.send(repo.dependencies);
+        res.send({...repo.dependencies, ...repo.devDependencies});
       }
     });
   });
@@ -69,7 +69,7 @@ app.get(
         getRepoInfo(repoName, cb);
       }, (err, repo) => {
           console.log('cached', repo.name);
-          res.send(repo.dependencies);
+          res.send({...repo.dependencies, ...repo.devDependencies});
       });
     });
   }

@@ -38,7 +38,7 @@ export default {
       if (!this.key) return;
       this.loading = true;
       axios
-        .get(`http://localhost:3000/express`)
+        .get(`http://localhost:3000/${this.key}`)
         .then(response => {
           console.log("response:", response);
           this.loading = false;

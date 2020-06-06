@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="d-flex flex-wrap">
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
@@ -14,7 +14,9 @@
     </v-app-bar>
 
     <v-content>
-      <RepoTree />
+      <div class="content overflow-auto">
+        <RepoTree />
+      </div>
     </v-content>
   </v-app>
 </template>
@@ -24,6 +26,11 @@ import RepoTree from "./components/RepoTree";
 
 export default {
   name: "App",
-  components: { RepoTree }
+  components: { RepoTree },
 };
 </script>
+<style lang="scss">
+  .content {
+    height: calc(100vh - 64px);
+  }
+</style>
